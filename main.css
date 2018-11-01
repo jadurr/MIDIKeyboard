@@ -1,0 +1,14 @@
+html, body{
+  height: auto;
+  display: flex;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+h1{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
