@@ -1,5 +1,4 @@
 #include "MIDIUSB.h"
-#include "PitchToNote.h"
 
 const int selectPins[3] = {2, 3, 4};
 const int digitalMuxInput = 5;
