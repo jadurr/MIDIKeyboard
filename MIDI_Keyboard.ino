@@ -59,7 +59,7 @@ void readNote(){
 }
 
 void playNote(){
- // playButtons();
+  //playButtons();
   playMuxButtons();
 }
 
@@ -98,7 +98,7 @@ void playButtons(){
 }
 
 void readMuxButtons(){
-    for (int i = 0; i < 8; i++)
+    for (byte i = 0; i < 8; i++)
   {
     selectMuxPin(i);
     if (digitalRead(5) == LOW)
@@ -140,4 +140,20 @@ void readCC(){
 void playCC(){
 //  playAnalog();
 //  playMuxAnalog();
+}
+
+void readAnalog(){
+
+}
+
+void readMuxAnalog(){
+
+}
+
+void playAnalog(){
+
+}
+
+void playMuxAnalog(){
+
 }
