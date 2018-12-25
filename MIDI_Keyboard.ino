@@ -1,5 +1,6 @@
 #include "MIDIUSB.h"
 #define NUM_TOTAL_BUTTONS 12
+#define NUM_TOTAL_ANALOG 8
 #define NUM_BUTTONS 4
 #define NUM_MUX_BUTTONS 8
 #define NUM_ANALOG 0
