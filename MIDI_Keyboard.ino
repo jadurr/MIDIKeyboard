@@ -44,22 +44,18 @@ void loop() {
 }
 
 void readNote(){
-  readButtons();
   //readMuxButtons();
+  //readButtons();
 }
 
 void playNote(){
-  playButtons();
   //playMuxButtons();
+  //playButtons();
 }
 
 void readButtons(){
-  for (int digitalchannel = 0; digitalchannel < 4; digitalchannel++)
+  for (byte digitalchannel = 0; digitalchannel < NUM_BUTTONS; digitalchannel++)
   {
-    int digitalValue = digitalRead(digitalInputs[digitalchannel]);
-    int digitalread = HIGH;
-
-
     if (digitalRead(digitalInputs[digitalchannel]) == LOW)
     {
       bitWrite(pressedButtons, digitalchannel, 1);
@@ -74,7 +70,7 @@ void readButtons(){
 
 
 void playButtons(){
-  for (int i = 0; i < 4; i++)
+  for (byte i = 0; i < NUM_BUTTONS; i++)
   {
     if (bitRead(pressedButtons, i) != bitRead(previousButtons, i))
     {
@@ -109,9 +105,13 @@ void readMuxButtons(){
 }
 
 void playMuxButtons(){
-    for (int i = 0; i < 8; i++)
+    for (byte i = 0; i < 8; i++)
   {
-    selectMuxPin(i);
+    /*
+     * debugging issue found
+     * playMuxButtons and playButtons are the same function
+     * need to isolate the fuctions bytes from each other
+     */
     if (bitRead(pressedButtons, i) != bitRead(previousButtons, i))
     {
       if (bitRead(pressedButtons, i))
@@ -142,12 +142,12 @@ void noteOff(byte channel, byte pitch, byte velocity) {
 
 void readCC(){
   //readAnalog();
- // readMuxAnalog();
+  //readMuxAnalog();
 }
 
 void playCC(){
 //  playAnalog();
-//  playMuxAnalog();
+  //playMuxAnalog();
 }
 
 void readAnalog(){
@@ -163,7 +163,10 @@ void playAnalog(){
 }
 
 void playMuxAnalog(){
-
+  for (byte CC = 0; CC < NUM_MUX_ANALOG; CC++) {
+    int midiCCValue = map(analogRead(CC), 0, 1023, 0, 127);
+    controlChange(0, CC, midiCCValue);
+  }
 }
 
 void controlChange(byte channel, byte control, byte value) {
