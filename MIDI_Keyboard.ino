@@ -19,8 +19,8 @@ const uint8_t digitalInputs[NUM_BUTTONS] = {6, 7, 8, 9};
 byte analogInputs[NUM_ANALOG];
 uint8_t pressedButtons = 0x00;
 uint8_t previousButtons = 0x00;
-const byte notePitchesMux[NUM_MUX_BUTTONS] = {48, 49, 50, 51, 52, 53, 54, 55};
-const byte notePitches[NUM_BUTTONS] = {56, 57, 58, 59};
+const byte notePitchesMux[NUM_MUX_BUTTONS + NUM_BUTTONS] = {48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59};
+//const byte notePitches[NUM_BUTTONS] = {56, 57, 58, 59};
 
 
 void setup() {
@@ -37,24 +37,19 @@ void setup() {
 
 void loop() {
   readNote();
-  playNote();
   readCC();
   playCC();
 
 }
 
 void readNote(){
-  //readMuxButtons();
-  readButtons();
+  readMuxButtons();
+  //readButtons();
 }
 
-void playNote(){
-  //playMuxButtons();
-  playButtons();
-}
 
 void readButtons(){
-  for (int digitalchannel = 0; digitalchannel < NUM_BUTTONS; digitalchannel++)
+  for (byte digitalchannel = 0; digitalchannel < NUM_BUTTONS; digitalchannel++)
   {
     if (digitalRead(digitalInputs[digitalchannel]) == LOW)
     {
@@ -66,38 +61,26 @@ void readButtons(){
 
   }
  }
-}
-
-
-void playButtons(){
-  for (int i = 0; i < NUM_BUTTONS; i++)
+   for (byte i = 0; i < NUM_BUTTONS; i++)
   {
-//    if (digitalRead(digitalInputs[i]) == LOW){
-//      noteOn(0, notePitches[i], 100);
-//      MidiUSB.flush();
-//    }else{
-//      noteOff(0, notePitches[i], 0);
-//      MidiUSB.flush();
-//    }
     if (bitRead(pressedButtons, i) != bitRead(previousButtons, i))
     {
       if (bitRead(pressedButtons, i))
       {
-        if(digitalRead(digitalInputs[i]) == LOW){
         bitWrite(previousButtons, i , 1);
-        noteOn(0, notePitches[i], 100);
+        noteOn(0, notePitchesMux[8 + i], 100);
         MidiUSB.flush();
       }
       else
       {
         bitWrite(previousButtons, i , 0);
-        noteOff(0, notePitches[i], 0);
+        noteOff(0, notePitchesMux[8 + i], 0);
         MidiUSB.flush();
-      }
     }
   }
 }
 }
+
 
 void readMuxButtons(){
     for (byte i = 0; i < 8; i++)
@@ -111,16 +94,9 @@ void readMuxButtons(){
     else
       bitWrite(pressedButtons, i, 0);
   }
-}
-
-void playMuxButtons(){
-    for (byte i = 0; i < 8; i++)
+      for (byte i = 0; i < 8; i++)
   {
-    /*
-     * debugging issue found
-     * playMuxButtons and playButtons are the same function
-     * need to isolate the fuctions bytes from each other
-     */
+    selectMuxPin(i);
     if (bitRead(pressedButtons, i) != bitRead(previousButtons, i))
     {
       if (bitRead(pressedButtons, i))
@@ -138,6 +114,7 @@ void playMuxButtons(){
     }
   }
 }
+
 
 void noteOn(byte channel, byte pitch, byte velocity) {
   midiEventPacket_t noteOn = {0x09, 0x90 | channel, pitch, velocity};
