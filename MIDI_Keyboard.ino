@@ -20,7 +20,6 @@ byte analogInputs[NUM_ANALOG];
 uint8_t pressedButtons = 0x00;
 uint8_t previousButtons = 0x00;
 const byte notePitchesMux[NUM_MUX_BUTTONS + NUM_BUTTONS] = {48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59};
-//const byte notePitches[NUM_BUTTONS] = {56, 57, 58, 59};
 
 
 void setup() {
@@ -38,8 +37,6 @@ void setup() {
 void loop() {
   readNote();
   readCC();
-  playCC();
-
 }
 
 void readNote(){
@@ -131,10 +128,6 @@ void readCC(){
   //readMuxAnalog();
 }
 
-void playCC(){
-//  playAnalog();
-  //playMuxAnalog();
-}
 
 void readAnalog(){
 
@@ -144,16 +137,6 @@ void readMuxAnalog(){
 
 }
 
-void playAnalog(){
-
-}
-
-void playMuxAnalog(){
-  for (byte CC = 0; CC < NUM_MUX_ANALOG; CC++) {
-    int midiCCValue = map(analogRead(CC), 0, 1023, 0, 127);
-    controlChange(0, CC, midiCCValue);
-  }
-}
 
 void controlChange(byte channel, byte control, byte value) {
   midiEventPacket_t event = {0x0B, 0xB0 | channel, control, value};
