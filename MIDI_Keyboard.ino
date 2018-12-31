@@ -44,7 +44,7 @@ void loop() {
 
 void readNote(){
   readMuxButtons();
-  //readButtons();
+  readButtons();
 }
 
 
