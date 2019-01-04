@@ -137,7 +137,7 @@ void selectMuxPin(byte pin){
       digitalWrite(selectPins[i], LOW);
   }
 }
-
+//pin 10 and pin 14 for octave up and down
 void noteOn(byte channel, byte pitch, byte velocity) {
   midiEventPacket_t noteOn = {0x09, 0x90 | channel, pitch, velocity};
   MidiUSB.sendMIDI(noteOn);
