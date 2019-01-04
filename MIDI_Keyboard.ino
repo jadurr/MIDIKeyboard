@@ -117,7 +117,7 @@ void playCC(){
     }
     if(muxPotMoving == true){
       if(midiPTState[i] != midiPLState[i]){
-        controlChange(0, 14 + i, midiPLState[i]);
+        controlChange(0, i, midiPLState[i]);
         MidiUSB.flush();
         muxPTState[i] = muxPLState[i];
         midiPTState[i] = midiPLState[i];
