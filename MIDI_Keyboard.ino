@@ -1,117 +1,106 @@
 #include "MIDIUSB.h"
-#define NUM_TOTAL_BUTTONS 12
-#define NUM_TOTAL_ANALOG 8
-#define NUM_BUTTONS 4
-#define NUM_MUX_BUTTONS 8
-#define NUM_ANALOG 0
+
+#define SELECT_0 2
+#define SELECT_1 3
+#define SELECT_2 4
+#define MUX_COM_DIGITAL 5
+#define MUX_COM_ANALOG A0
+#define NUM_MUX_DIGITAL 8
+#define NUM_DIGITAL 4
 #define NUM_MUX_ANALOG 8
-#define MUX_DIGITAL_COM 5
-#define MUX_ANALOG_COM A0
-#define MIDI_CHANNEL 0
-#define MUX_SELECT_0 2
-#define MUX_SELECT_1 3
-#define MUX_SELECT_2 4
+#define NUM_ANALOG 0
+#define TOTAL_NUM_BUTTONS 12
 
-const int selectPins[3] = {MUX_SELECT_0, MUX_SELECT_1, MUX_SELECT_2};
-const int digitalMuxInput = MUX_DIGITAL_COM;
-const int analogMuxInput = MUX_ANALOG_COM;
-const uint8_t digitalInputs[NUM_BUTTONS] = {6, 7, 8, 9};
-byte analogInputs[NUM_ANALOG];
-uint8_t pressedButtons = 0x00;
-uint8_t previousButtons = 0x00;
-const byte notePitchesMux[NUM_MUX_BUTTONS + NUM_BUTTONS] = {48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59};
+int A = 0;
+int B = 0;
+int C = 0;
 
+const int digitalChannelPin[NUM_DIGITAL] = {6, 7, 8, 9};
+byte notePitches[TOTAL_NUM_BUTTONS] = {48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59};
+int muxBLState[NUM_MUX_DIGITAL] = {0};
+int muxBTState[NUM_MUX_DIGITAL] = {0};
+unsigned long debounceMux[NUM_MUX_DIGITAL] = {0};
+unsigned long debounceDelay = 5;
+int BLState[NUM_DIGITAL] = {0};
+int BTState[NUM_DIGITAL] = {0};
+unsigned long debounceButton[NUM_DIGITAL] = {0};
+int selectPins[] = {SELECT_0, SELECT_1, SELECT_2};
 
 void setup() {
-  for(int i=0; i<3; i++){
-    pinMode(selectPins[i],OUTPUT);
-  }
-  for(int i=0; i<4; i++){
-    pinMode(digitalInputs[i], INPUT_PULLUP);
-  }
-  pinMode(digitalMuxInput, INPUT_PULLUP);
-  pinMode(analogMuxInput, INPUT);
   Serial.begin(9600);
+
+  for(int i = 0; i < NUM_DIGITAL; i++){
+    pinMode(digitalChannelPin[i], INPUT_PULLUP);
+  }
+  pinMode(MUX_COM_DIGITAL, INPUT_PULLUP);
+  pinMode(MUX_COM_ANALOG, INPUT);
+  pinMode(SELECT_0, OUTPUT);
+  pinMode(SELECT_1, OUTPUT);
+  pinMode(SELECT_2, OUTPUT);
 }
 
 void loop() {
-  readNote();
-  readCC();
+  playNotes();
+  playCC();
 }
 
-void readNote(){
-  readMuxButtons();
-  readButtons();
-}
-
-
-void readButtons(){
-  for (byte digitalchannel = 0; digitalchannel < NUM_BUTTONS; digitalchannel++)
-  {
-    if (digitalRead(digitalInputs[digitalchannel]) == LOW)
-    {
-      bitWrite(pressedButtons, digitalchannel, 1);
-      delay(50);
-    }
-    else{
-      bitWrite(pressedButtons, digitalchannel, 0);
-
-  }
- }
-   for (byte i = 0; i < NUM_BUTTONS; i++)
-  {
-    if (bitRead(pressedButtons, i) != bitRead(previousButtons, i))
-    {
-      if (bitRead(pressedButtons, i))
-      {
-        bitWrite(previousButtons, i , 1);
-        noteOn(0, notePitchesMux[8 + i], 100);
-        MidiUSB.flush();
-      }
-      else
-      {
-        bitWrite(previousButtons, i , 0);
-        noteOff(0, notePitchesMux[8 + i], 0);
-        MidiUSB.flush();
-    }
-  }
-}
-}
-
-
-void readMuxButtons(){
-    for (byte i = 0; i < 8; i++)
-  {
+void playNotes(){
+  for (int i = 0; i < NUM_MUX_DIGITAL; i++){
     selectMuxPin(i);
-    if (digitalRead(5) == LOW)
-    {
-      bitWrite(pressedButtons, i, 1);
-      delay(50);
+    muxBLState[i] = digitalRead(MUX_COM_DIGITAL);
+    if((millis() - debounceMux[i]) > debounceDelay){
+      if(muxBTState[i] != muxBLState[i]){
+        debounceMux[i] = millis();
+        if(muxBLState[i] == LOW){
+          noteOn(0, notePitches[i], 100);
+          MidiUSB.flush();
+        }
+        else
+        {
+          noteOff(0, notePitches[i], 0);
+          MidiUSB.flush();
+        }
+        muxBTState[i] = muxBLState[i];
+      }
     }
+  }
+  for (int i = 0; i < NUM_DIGITAL; i++){
+    BLState[i] = digitalRead(digitalChannelPin[i]);
+    if ((millis() - debounceButton[i]) > debounceDelay){
+      if (BTState[i] != BLState[i]){
+        debounceButton[i] = millis();
+        if(BLState[i] == LOW){
+          noteOn(0, notePitches[8 + i], 100);
+          MidiUSB.flush();
+        }
+        else
+        {
+          noteOff(0, notePitches[8 + i], 0);
+          MidiUSB.flush();
+        }
+        BTState[i] = BLState[i];
+      }
+    }
+  }
+}
+
+void playCC(){
+  for (int i = 0; i < NUM_MUX_ANALOG; i++){
+
+  }
+  for (int i = 0; i < NUM_ANALOG; i++){
+
+  }
+}
+
+void selectMuxPin(byte pin){
+  for(int i=0; i<3; i++){
+    if(pin & (1<<i))
+      digitalWrite(selectPins[i], HIGH);
     else
-      bitWrite(pressedButtons, i, 0);
-  }
-      for (byte i = 0; i < 8; i++)
-  {
-    selectMuxPin(i);
-    if (bitRead(pressedButtons, i) != bitRead(previousButtons, i))
-    {
-      if (bitRead(pressedButtons, i))
-      {
-        bitWrite(previousButtons, i , 1);
-        noteOn(0, notePitchesMux[i], 100);
-        MidiUSB.flush();
-      }
-      else
-      {
-        bitWrite(previousButtons, i , 0);
-        noteOff(0, notePitchesMux[i], 0);
-        MidiUSB.flush();
-      }
-    }
+      digitalWrite(selectPins[i], LOW);
   }
 }
-
 
 void noteOn(byte channel, byte pitch, byte velocity) {
   midiEventPacket_t noteOn = {0x09, 0x90 | channel, pitch, velocity};
@@ -123,31 +112,7 @@ void noteOff(byte channel, byte pitch, byte velocity) {
   MidiUSB.sendMIDI(noteOff);
 }
 
-void readCC(){
-  //readAnalog();
-  //readMuxAnalog();
-}
-
-
-void readAnalog(){
-
-}
-
-void readMuxAnalog(){
-
-}
-
-
 void controlChange(byte channel, byte control, byte value) {
   midiEventPacket_t event = {0x0B, 0xB0 | channel, control, value};
   MidiUSB.sendMIDI(event);
-}
-
-void selectMuxPin(byte pin){
-  for(int i=0; i<3; i++){
-    if(pin & (1<<i))
-      digitalWrite(selectPins[i], HIGH);
-    else
-      digitalWrite(selectPins[i], LOW);
-  }
 }
