@@ -14,6 +14,7 @@
 int A = 0;
 int B = 0;
 int C = 0;
+int selectPins[] = {SELECT_0, SELECT_1, SELECT_2};
 
 const int digitalChannelPin[NUM_DIGITAL] = {6, 7, 8, 9};
 byte notePitches[TOTAL_NUM_BUTTONS] = {48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59};
@@ -24,7 +25,17 @@ unsigned long debounceDelay = 5;
 int BLState[NUM_DIGITAL] = {0};
 int BTState[NUM_DIGITAL] = {0};
 unsigned long debounceButton[NUM_DIGITAL] = {0};
-int selectPins[] = {SELECT_0, SELECT_1, SELECT_2};
+
+int muxPLState[NUM_MUX_ANALOG] = {0};
+int muxPTState[NUM_MUX_ANALOG] = {0};
+int midiPLState[NUM_MUX_ANALOG] = {0};
+int midiPTState[NUM_MUX_ANALOG] = {0};
+int muxPVar = 0;
+int TIMEOUT = 300;
+int varThreshold = 10;
+boolean muxPotMoving = true;
+unsigned long muxPTime[NUM_MUX_ANALOG] = {0};
+unsigned long muxTimer[NUM_MUX_ANALOG] = {0};
 
 void setup() {
   Serial.begin(9600);
@@ -86,7 +97,28 @@ void playNotes(){
 
 void playCC(){
   for (int i = 0; i < NUM_MUX_ANALOG; i++){
-
+    selectMuxPin(i);
+    muxPLState[i] = analogRead(MUX_COM_ANALOG);
+    midiPLState[i] = map(muxPLState[i], 0, 1023, 0, 127);
+    muxPVar = abs(muxPLState - muxPTState);
+    if(muxPVar > varThreshold){
+      muxPTime[i] = millis();
+    }
+    muxTimer[i] = millis() - muxPTime[i];
+    if(muxTimer[i] < TIMEOUT){
+      muxPotMoving = true;
+    }
+    else {
+      muxPotMoving = false;
+    }
+    if(muxPotMoving == true){
+      if(midiPTState[i] != midiPLState[i]){
+        controlChange(0, i, midiPLState[i]);
+        MidiUSB.flush();
+        muxPTState[i] = muxPLState[i];
+        midiPTState[i] - midiPLState[i];
+      }
+    }
   }
   for (int i = 0; i < NUM_ANALOG; i++){
 
