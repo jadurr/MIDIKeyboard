@@ -12,14 +12,10 @@
 #define TOTAL_NUM_BUTTONS 12
 #define TOTAL_NUM_ANALOG 8
 
-int A = 0;
-int B = 0;
-int C = 0;
 int selectPins[] = {SELECT_0, SELECT_1, SELECT_2};
 
 const int digitalChannelPin[NUM_DIGITAL] = {6, 7, 8, 9};
 byte notePitches[TOTAL_NUM_BUTTONS] = {48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59};
-byte ccValues[TOTAL_NUM_ANALOG] = {1, 7, 8, 10, 16, 17, 18, 19};
 int muxBLState[NUM_MUX_DIGITAL] = {0};
 int muxBTState[NUM_MUX_DIGITAL] = {0};
 unsigned long debounceMux[NUM_MUX_DIGITAL] = {0};
