@@ -15,7 +15,7 @@
 #define OCTAVE_DOWN 10    // the pin that the Down pushbutton is attached to
 
 int selectPins[] = {SELECT_0, SELECT_1, SELECT_2};
-int octave = 3;
+int octave = 4;
 const int digitalChannelPin[NUM_DIGITAL] = {6, 7, 8, 9};
 byte notePitches[][TOTAL_NUM_BUTTONS] = {
 {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11},
@@ -154,7 +154,7 @@ void selectMuxPin(byte pin){
 void chooseOctave(){
      octaveUpState = digitalRead(OCTAVE_UP);
    if (octaveUpState != originalOctaveState) {
-     if (octaveUpState == HIGH)
+     if (octaveUpState == LOW)
      {
       octave++;
      }
@@ -162,7 +162,7 @@ void chooseOctave(){
    originalOctaveState = octaveUpState;
    octaveDownState = digitalRead(OCTAVE_DOWN);
    if (octaveDownState != originalOctaveState) {
-     if (octaveDownState == HIGH)
+     if (octaveDownState == LOW)
      {
       octave--;
      }
