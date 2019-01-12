@@ -11,9 +11,11 @@
 #define NUM_ANALOG 0
 #define TOTAL_NUM_BUTTONS 12
 #define TOTAL_NUM_ANALOG 8
+#define OCTAVE_UP 14    // the pin that the Up pushbutton is attached to
+#define OCTAVE_DOWN 10    // the pin that the Down pushbutton is attached to
 
 int selectPins[] = {SELECT_0, SELECT_1, SELECT_2};
-int octave = 4;
+int octave = 3;
 const int digitalChannelPin[NUM_DIGITAL] = {6, 7, 8, 9};
 byte notePitches[][TOTAL_NUM_BUTTONS] = {
 {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11},
@@ -46,6 +48,9 @@ int varThreshold = 10;
 boolean muxPotMoving = true;
 unsigned long muxPTime[NUM_MUX_ANALOG] = {0};
 unsigned long muxTimer[NUM_MUX_ANALOG] = {0};
+int octaveUpState = 0;         // current state of the button
+int octaveDownState = 0;         // current state of the button
+int originalOctaveState = 0;     // previous state of the button
 
 void setup() {
   Serial.begin(9600);
@@ -58,9 +63,12 @@ void setup() {
   pinMode(SELECT_0, OUTPUT);
   pinMode(SELECT_1, OUTPUT);
   pinMode(SELECT_2, OUTPUT);
+  pinMode(OCTAVE_UP, INPUT_PULLUP);
+  pinMode(OCTAVE_DOWN, INPUT_PULLUP);
 }
 
 void loop() {
+  chooseOctave();
   playNotes();
   playCC();
 }
@@ -115,8 +123,6 @@ void playCC(){
       muxPTime[i] = millis();
     }
     muxTimer[i] = millis() - muxPTime[i];
-    Serial.print(muxTimer[i]);
-    Serial.println();
     if(muxTimer[i] < TIMEOUT){
       muxPotMoving = true;
     }
@@ -144,6 +150,26 @@ void selectMuxPin(byte pin){
     else
       digitalWrite(selectPins[i], LOW);
   }
+}
+void chooseOctave(){
+     octaveUpState = digitalRead(OCTAVE_UP);
+   if (octaveUpState != originalOctaveState) {
+     if (octaveUpState == HIGH)
+     {
+      octave++;
+     }
+   }
+   originalOctaveState = octaveUpState;
+   octaveDownState = digitalRead(OCTAVE_DOWN);
+   if (octaveDownState != originalOctaveState) {
+     if (octaveDownState == HIGH)
+     {
+      octave--;
+     }
+   }
+   originalOctaveState = octaveDownState;
+   Serial.println(octave);
+   delay(100);
 }
 //pin 10 and pin 14 for octave up and down
 void noteOn(byte channel, byte pitch, byte velocity) {
