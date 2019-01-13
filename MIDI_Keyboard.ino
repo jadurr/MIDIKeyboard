@@ -71,6 +71,7 @@ void loop() {
   chooseOctave();
   playNotes();
   playCC();
+  Serial.println(octave);
 }
 
 void playNotes(){
@@ -168,7 +169,6 @@ void chooseOctave(){
      }
    }
    originalOctaveState = octaveDownState;
-   Serial.println(octave);
    delay(100);
 }
 //pin 10 and pin 14 for octave up and down
