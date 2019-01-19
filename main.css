@@ -3,19 +3,206 @@ html, body{
   display: flex;
   width: 100%;
   padding: 0;
-  margin: auto;
   flex-direction: column;
   flex-wrap: wrap;
+  background: black;
+  margin: 0;
+  color: white;
 }
 h1, h2, h4, ul, li{
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1;
 }
 table, tr, td{
-  border: 1px solid black;
+  border: 1px solid white;
   border-collapse: collapse;
+  z-index: 1;
 }
 p{
   text-align: center;
+  z-index: 1;
+}
+.background{
+  z-index: 0;
+}
+.peak {
+  position: absolute;
+  top: 50%;
+  width: 2em;
+  height: 1em;
+}
+.grad1 {
+  background: repeating-linear-gradient(0deg, black, black 0.1em, #7d30fa 0.2em, #7d30fa 1em);
+  box-shadow: 0 0 2em 0 #7d30fa, 0 0 0.5em 0 black;
+  animation: play 460.5ms steps(10, end) infinite alternate;
+}
+.p1 {
+  left: 29%;
+  transform-origin: 0% 0%;
+  transform: rotateX(180deg);
+}
+.s1 {
+  left: 29%;
+  top: 51%;
+  transform-origin: 0% 50%;
+  transform: rotateX(-180deg);
+}
+.grad2 {
+  background: repeating-linear-gradient(0deg, black, black 0.1em, darkblue 0.2em, darkblue 1em);
+  box-shadow: 0 0 2em 0 darkblue, 0 0 0.5em 0 black;
+  animation: play 260ms steps(10, end) infinite alternate;
+}
+.p2 {
+  left: 33%;
+  transform-origin: 0% 0%;
+  transform: rotateX(180deg);
+}
+.s2 {
+  left: 33%;
+  top: 51%;
+  transform-origin: 0% 50%;
+  transform: rotateX(-180deg);
+}
+.grad3 {
+  background: repeating-linear-gradient(0deg, black, black 0.1em, blue 0.2em, blue 1em);
+  box-shadow: 0 0 2em 0 blue, 0 0 0.5em 0 black;
+  animation: play 556ms steps(10, end) infinite alternate;
+}
+.p3 {
+  left: 37%;
+  transform-origin: 0% 0%;
+  transform: rotateX(180deg);
+}
+.s3 {
+  left: 37%;
+  top: 51%;
+  transform-origin: 0% 50%;
+  transform: rotateX(-180deg);
+}
+.grad4 {
+  background: repeating-linear-gradient(0deg, black, black 0.1em, #0cf 0.2em, #0cf 1em);
+  box-shadow: 0 0 2em 0 #0cf, 0 0 0.5em 0 black;
+  animation: play 295ms steps(10, end) infinite alternate;
+}
+.p4 {
+  left: 41%;
+  transform-origin: 0% 0%;
+  transform: rotateX(180deg);
+}
+.s4 {
+  left: 41%;
+  top: 51%;
+  transform-origin: 0% 50%;
+  transform: rotateX(-180deg);
+}
+.grad5 {
+  background: repeating-linear-gradient(0deg, black, black 0.1em, green 0.2em, green 1em);
+  box-shadow: 0 0 2em 0 green, 0 0 0.5em 0 black;
+  animation: play 438ms steps(10, end) infinite alternate;
+}
+.p5 {
+  left: 45%;
+  transform-origin: 0% 0%;
+  transform: rotateX(180deg);
+}
+.s5 {
+  left: 45%;
+  top: 51%;
+  transform-origin: 0% 50%;
+  transform: rotateX(-180deg);
+}
+.grad6 {
+  background: repeating-linear-gradient(0deg, black, black 0.1em, lime 0.2em, lime 1em);
+  box-shadow: 0 0 2em 0 lime, 0 0 0.5em 0 black;
+  animation: play 410ms steps(10, end) infinite alternate;
+}
+.p6 {
+  left: 49%;
+  transform-origin: 0% 0%;
+  transform: rotateX(180deg);
+}
+.s6 {
+  left: 49%;
+  top: 51%;
+  transform-origin: 0% 50%;
+  transform: rotateX(-180deg);
+}
+.grad7 {
+  background: repeating-linear-gradient(0deg, black, black 0.1em, yellow 0.2em, yellow 1em);
+  box-shadow: 0 0 2em 0 yellow, 0 0 0.5em 0 black;
+  animation: play 491.5ms steps(10, end) infinite alternate;
+}
+.p7 {
+  left: 53%;
+  transform-origin: 0% 0%;
+  transform: rotateX(180deg);
+}
+.s7 {
+  left: 53%;
+  top: 51%;
+  transform-origin: 0% 50%;
+  transform: rotateX(-180deg);
+}
+.grad8 {
+  background: repeating-linear-gradient(0deg, black, black 0.1em, orange 0.2em, orange 1em);
+  box-shadow: 0 0 2em 0 orange, 0 0 0.5em 0 black;
+  animation: play 319.5ms steps(10, end) infinite alternate;
+}
+.p8 {
+  left: 57%;
+  transform-origin: 0% 0%;
+  transform: rotateX(180deg);
+}
+.s8 {
+  left: 57%;
+  top: 51%;
+  transform-origin: 0% 50%;
+  transform: rotateX(-180deg);
+}
+.grad9 {
+  background: repeating-linear-gradient(0deg, black, black 0.1em, red 0.2em, red 1em);
+  box-shadow: 0 0 2em 0 red, 0 0 0.5em 0 black;
+  animation: play 445.5ms steps(10, end) infinite alternate;
+}
+.p9 {
+  left: 61%;
+  transform-origin: 0% 0%;
+  transform: rotateX(180deg);
+}
+.s9 {
+  left: 61%;
+  top: 51%;
+  transform-origin: 0% 50%;
+  transform: rotateX(-180deg);
+}
+.grad10 {
+  background: repeating-linear-gradient(0deg, black, black 0.1em, darkred 0.2em, darkred 1em);
+  box-shadow: 0 0 2em 0 darkred, 0 0 0.5em 0 black;
+  animation: play 282.5ms steps(10, end) infinite alternate;
+}
+.p10 {
+  left: 65%;
+  transform-origin: 0% 0%;
+  transform: rotateX(180deg);
+}
+.s10 {
+  left: 65%;
+  top: 51%;
+  transform-origin: 0% 50%;
+  transform: rotateX(-180deg);
+}
+/* static */
+.shadow {
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  height: 50%;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(44, 44, 44, 0.8) 30%, rgba(56, 56, 56, 0.8) 45%, rgba(59, 59, 59, 0.8) 55%, rgba(56, 56, 56, 0.8) 65%, rgba(43, 43, 43, 0.8) 100%);
+}
+@keyframes play {
+  to {
+    height: 11em;
+  }
 }
