@@ -1,18 +1,18 @@
 #include "MIDIUSB.h"
 
-#define SELECT_0 2
-#define SELECT_1 3
-#define SELECT_2 4
-#define MUX_COM_DIGITAL 5
-#define MUX_COM_ANALOG A0
+#define SELECT_0 2 //Multiplexer Pin A
+#define SELECT_1 3 //Multiplexer Pin B
+#define SELECT_2 4 //Multiplexer Pin C
+#define MUX_COM_DIGITAL 5 //Multiplexer Digital Input Pin
+#define MUX_COM_ANALOG A0 //Multiplexer Analog Input Pin
 #define NUM_MUX_DIGITAL 8
-#define NUM_DIGITAL 4
+#define NUM_DIGITAL 4 //Amount of Digital Inputs not on the multiplexer
 #define NUM_MUX_ANALOG 8
-#define NUM_ANALOG 0
-#define TOTAL_NUM_BUTTONS 12
-#define TOTAL_NUM_ANALOG 8
-#define OCTAVE_UP 14    // the pin that the Up pushbutton is attached to
-#define OCTAVE_DOWN 10    // the pin that the Down pushbutton is attached to
+#define NUM_ANALOG 0 //Amount of Analog Inputs not on the multiplexer
+#define TOTAL_NUM_BUTTONS 12 //Total number of buttons
+#define TOTAL_NUM_ANALOG 8 //Total number of analog inputs
+#define OCTAVE_UP 14    //Octave up button
+#define OCTAVE_DOWN 10    //Octave down button
 
 int selectPins[] = {SELECT_0, SELECT_1, SELECT_2};
 int octave = 4;
@@ -71,7 +71,6 @@ void loop() {
   chooseOctave();
   playNotes();
   playCC();
-  Serial.println(octave);
 }
 
 void playNotes(){
@@ -171,7 +170,6 @@ void chooseOctave(){
    originalOctaveState = octaveDownState;
    delay(100);
 }
-//pin 10 and pin 14 for octave up and down
 void noteOn(byte channel, byte pitch, byte velocity) {
   midiEventPacket_t noteOn = {0x09, 0x90 | channel, pitch, velocity};
   MidiUSB.sendMIDI(noteOn);
