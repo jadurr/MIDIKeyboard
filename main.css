@@ -13,15 +13,15 @@ h1, h2, h4, ul, li{
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1;
 }
 table, tr, td{
   border: 1px solid white;
   border-collapse: collapse;
-  z-index: 1;
 }
 p{
   text-align: center;
+}
+section{
   z-index: 1;
 }
 .background{
