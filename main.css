@@ -9,6 +9,10 @@ html, body{
   margin: 0;
   color: white;
 }
+h1{
+  font-size: 60px;
+  margin-bottom: 800px;
+}
 h1, h2, h4, ul, li{
   display: flex;
   justify-content: center;

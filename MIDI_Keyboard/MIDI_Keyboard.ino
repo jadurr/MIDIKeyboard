@@ -168,7 +168,7 @@ void chooseOctave(){
      }
    }
    originalOctaveState = octaveDownState;
-   delay(100);
+   delay(300);
 }
 void noteOn(byte channel, byte pitch, byte velocity) {
   midiEventPacket_t noteOn = {0x09, 0x90 | channel, pitch, velocity};
