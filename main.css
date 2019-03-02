@@ -11,7 +11,7 @@ html, body{
 }
 h1{
   font-size: 60px;
-  margin-bottom: 15em;
+  margin-top: 1.8em;
 }
 
 h1, h2, h4, ul, li{
@@ -290,10 +290,10 @@ a{
   position: absolute;
   width: 100%;
   margin: -100px 0 0 -50px;
-  padding: 50px;
-  padding-top: 125px;
+  padding: 70px 30px 55px 50px;
 
   background: #ededed;
+  background-size: 200px 10px;
   list-style-type: none;
   -webkit-font-smoothing: antialiased;
 
@@ -304,7 +304,7 @@ a{
 }
 #menu li
 {
-  padding: 10px 50px;
+  padding: 0px 30px;
   font-size: 22px;
 }
 #menuToggle input:checked ~ ul
