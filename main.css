@@ -23,6 +23,9 @@ table, tr, td{
   border: 1px solid white;
   border-collapse: collapse;
 }
+.large{
+  font-size: 120px;
+}
 p{
   text-align: center;
 }
