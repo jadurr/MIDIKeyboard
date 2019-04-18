@@ -9,12 +9,12 @@ html, body{
   margin: 0;
   color: white;
 }
-h1{
+h1,h2{
   font-size: 60px;
   margin-top: 1.8em;
 }
 
-h1, h2, h4, ul, li{
+h1, h2, h3, h4, ul, li{
   display: flex;
   justify-content: center;
   align-items: center;
