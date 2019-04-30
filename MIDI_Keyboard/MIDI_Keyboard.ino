@@ -53,8 +53,8 @@ int octaveDownState = 0;         // current state of the button
 int originalOctaveState = 0;     // previous state of the button
 
 void setup() {
-  Serial.begin(9600);
-
+  Serial.begin(9600);//Intitalize Serial Monitor
+//Intitalize all pins
   for(int i = 0; i < NUM_DIGITAL; i++){
     pinMode(digitalChannelPin[i], INPUT_PULLUP);
   }
